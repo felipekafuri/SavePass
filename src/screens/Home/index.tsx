@@ -33,9 +33,10 @@ export function Home() {
     // Get asyncStorage data, use setSearchListData and setData
     const response = await AsyncStorage.getItem(dataKey)
 
-    setData(JSON.parse(response))
-    setSearchListData(JSON.parse(response))
-
+    if(response){
+      setData(JSON.parse(response))
+      setSearchListData(JSON.parse(response))
+    }
   }
 
   function handleFilterLoginData() {
@@ -44,11 +45,13 @@ export function Home() {
       return
     }
 
-    const filteredData = data.filter(item => {
-      return item.service_name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredData = searchListData.filter(item => {
+      if(item.service_name.includes(searchText)){
+        return item
+      }
     })
 
-    setSearchListData(filteredData)
+    setSearchListData(filteredData )
   }
 
   function handleChangeInputText(text: string) {
